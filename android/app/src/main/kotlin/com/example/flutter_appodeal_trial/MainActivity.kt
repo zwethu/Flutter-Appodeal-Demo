@@ -1,4 +1,4 @@
-package com.example.flutter_appodeal_trial
+package com.zwe_thu.flutter_appodeal_trial
 
 import io.flutter.embedding.android.FlutterActivity
 
