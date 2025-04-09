@@ -8,11 +8,37 @@ import 'package:stack_appodeal_flutter/stack_appodeal_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  runApp(const MyApp());
+}
 
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    initializeAppodeal();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: AppConstants.appName,
+      home: const HomePage(),
+    );
+  }
+}
+
+Future<void> initializeAppodeal() async {
   // getting appodeal key from .env
   await dotenv.load();
-  String appodealAppKey = dotenv.env['APPODEAL_APP_KEY'] ??
-      'Empty Key';
+  String appodealAppKey = dotenv.env['APPODEAL_APP_KEY'] ?? 'Empty Key';
 
   // Appodeal general configuration
   // Set auto caching enabled for all types
@@ -47,7 +73,7 @@ void main() async {
 // Enable or disable banner refresh animation
   Appodeal.setBannerAnimation(true); //default - true
 
-    // get info about how much revenue made from an ads
+  // get info about how much revenue made from an ads
   Appodeal.setAdRevenueCallbacks(onAdRevenueReceive: (adRevenue) {
     // Example of logging revenue info
     log("Ad Revenue: ${adRevenue.revenue} ${adRevenue.currency}");
@@ -65,7 +91,6 @@ void main() async {
       AppodealAdType.MREC,
       AppodealAdType.NativeAd,
     ],
-
     onInitializationFinished: (errors) {
       log('Appodeal Init Error occurred.');
       if (errors != null) {
@@ -75,18 +100,4 @@ void main() async {
       }
     },
   );
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: AppConstants.appName,
-      home: const HomePage(),
-    );
-  }
 }
